@@ -114,13 +114,13 @@ names(soudelor)[18:19] <- c("maxWind", "gust")
 names(megi)[16:17] <- c("maxWind", "gust")
 soudelor_rf <- randomForest(Soudelor~., data = soudelor[, -c(1:5)])
 soudelor_pred <- predict(soudelor_rf, newdata = megi[5:17])
-megi_pred <- 1.45*soudelor_pred
+megi_pred <- 1.0*soudelor_pred
 
 names(meranti)[18:19] <- c("maxWind", "gust")
 names(nesatAndHaitang)[16:17] <- c("maxWind", "gust")
 meranti_rf <- randomForest(MerantiAndMalakas~., data = meranti[, -c(1:5)])
 meranti_pred <- predict(meranti_rf, newdata = nesatAndHaitang[5:17])
-nesatAndHaitang_pred <- 1.53*meranti_pred
+nesatAndHaitang_pred <- 1.0*meranti_pred
 
 submit_dc <- cbind(submit[1:4], nesatAndHaitang_pred) %>% 
              cbind(megi_pred)

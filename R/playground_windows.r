@@ -88,8 +88,7 @@ nesatAndHaitang <- select(submit, -c(5:6))
 
 # 加入特各颱風風力資料
 # 資料來源為颱風資料庫(http://rdc28.cwb.gov.tw/)
-gust <- read.csv("./data/gust.csv", fileEncoding = "utf8")
-#gust <- read_csv("./data/gust.csv")
+gust <- read_csv("./data/gust.csv")
 names(gust)[1] <- "CityName"
 gust$CityName <- as.factor(gust$CityName)
 soudelor <- left_join(soudelor, gust[,c(1:3)], by = "CityName")
@@ -103,13 +102,13 @@ names(soudelor)[18:19] <- c("maxWind", "gust")
 names(megi)[16:17] <- c("maxWind", "gust")
 soudelor_rf <- randomForest(Soudelor~., data = soudelor[, -c(1:5)])
 soudelor_pred <- predict(soudelor_rf, newdata = megi[5:17])
-megi_pred <- 1.48*soudelor_pred
+megi_pred <- 1.0*soudelor_pred
 
 names(meranti)[18:19] <- c("maxWind", "gust")
 names(nesatAndHaitang)[16:17] <- c("maxWind", "gust")
 meranti_rf <- randomForest(MerantiAndMalakas~., data = meranti[, -c(1:5)])
 meranti_pred <- predict(meranti_rf, newdata = nesatAndHaitang[5:17])
-nesatAndHaitang_pred <- 1.45*meranti_pred
+nesatAndHaitang_pred <- 1.0*meranti_pred
 
 submit_dc <- cbind(submit[1:4], nesatAndHaitang_pred) %>% 
              cbind(megi_pred)
