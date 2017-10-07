@@ -354,8 +354,7 @@ train$household[train$縣市行政區 == &quot;高雄市鳳山區&quot;] &lt;- r
 <div class="section level2">
 <h2>加入颱風風力資料</h2>
 <p>讀取颱風風力資料，資料來源為<a href="http://rdc28.cwb.gov.tw/">颱風資料庫</a></p>
-<pre class="r"><code>library(xlsx)
-gust &lt;- xlsx::read.xlsx(&quot;./data/gust.xlsx&quot;, 1)
+<pre class="r"><code>gust &lt;- read.csv(&quot;./data/gust.csv&quot;)
 names(gust)[1] &lt;- &quot;CityName&quot;
 gust$CityName &lt;- as.factor(gust$CityName)</code></pre>
 <p>將train set和submit set中的颱風資料選出來</p>
@@ -385,13 +384,13 @@ names(soudelor)[18:19] &lt;- c(&quot;maxWind&quot;, &quot;gust&quot;)
 names(megi)[16:17] &lt;- c(&quot;maxWind&quot;, &quot;gust&quot;)
 soudelor_rf &lt;- randomForest(Soudelor~., data = soudelor[, -c(1:5)])
 soudelor_pred &lt;- predict(soudelor_rf, newdata = megi[5:17])
-megi_pred &lt;- 1.45*soudelor_pred</code></pre>
+megi_pred &lt;- 1.0*soudelor_pred</code></pre>
 <p>用 莫蘭蒂+馬勒卡颱風 預測 尼莎+海棠颱風</p>
 <pre class="r"><code>names(meranti)[18:19] &lt;- c(&quot;maxWind&quot;, &quot;gust&quot;)
 names(nesatAndHaitang)[16:17] &lt;- c(&quot;maxWind&quot;, &quot;gust&quot;)
 meranti_rf &lt;- randomForest(MerantiAndMalakas~., data = meranti[, -c(1:5)])
 meranti_pred &lt;- predict(meranti_rf, newdata = nesatAndHaitang[5:17])
-nesatAndHaitang_pred &lt;- 1.53*meranti_pred</code></pre>
+nesatAndHaitang_pred &lt;- 1.0*meranti_pred</code></pre>
 <p>組合上傳檔案</p>
 <pre class="r"><code>submit_dc &lt;- cbind(submit[1:4], nesatAndHaitang_pred) %&gt;% 
              cbind(megi_pred)

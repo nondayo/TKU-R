@@ -196,7 +196,7 @@ submit <- left_join(submit, train[, c(3, 14:24)], by = "VilCode")
 ## 加入颱風風力資料
 讀取颱風風力資料，資料來源為[颱風資料庫](http://rdc28.cwb.gov.tw/)
 ```{r}
-gust_csv <- read.csv("./data/gust.csv")
+gust <- read.csv("./data/gust.csv")
 names(gust)[1] <- "CityName"
 gust$CityName <- as.factor(gust$CityName)
 ```
@@ -233,7 +233,7 @@ names(soudelor)[18:19] <- c("maxWind", "gust")
 names(megi)[16:17] <- c("maxWind", "gust")
 soudelor_rf <- randomForest(Soudelor~., data = soudelor[, -c(1:5)])
 soudelor_pred <- predict(soudelor_rf, newdata = megi[5:17])
-megi_pred <- 1.45*soudelor_pred
+megi_pred <- 1.0*soudelor_pred
 ```
 
 用 莫蘭蒂+馬勒卡颱風 預測 尼莎+海棠颱風
@@ -242,7 +242,7 @@ names(meranti)[18:19] <- c("maxWind", "gust")
 names(nesatAndHaitang)[16:17] <- c("maxWind", "gust")
 meranti_rf <- randomForest(MerantiAndMalakas~., data = meranti[, -c(1:5)])
 meranti_pred <- predict(meranti_rf, newdata = nesatAndHaitang[5:17])
-nesatAndHaitang_pred <- 1.53*meranti_pred
+nesatAndHaitang_pred <- 1.0*meranti_pred
 ```
 
 組合上傳檔案
